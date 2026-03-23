@@ -25,7 +25,7 @@ git clone https://github.com/ijb0708/ip-scanner.git
 cd ip-scanner
 
 # Build and run the container
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 Open your browser and navigate to http://localhost:5000 to check the scan results.
