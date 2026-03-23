@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Network Scanner</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --active-bg: #e8f5e9;
+            --active-border: #4caf50;
+            --inactive-border: #dee2e6;
+            --text-color: #212529;
+        }
+
+        body {
+            /* 외부 폰트 대신 시스템 기본 고딕체 사용 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f1f3f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 100%;
+            margin-bottom: 20px;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .main-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .refresh-btn {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        .refresh-btn:hover { opacity: 0.85; }
+
+        /* 10열 그리드 */
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 6px; 
+            width: 100%;
+        }
+
+        /* 카드 디자인 */
+        .ip-card {
+            background-color: white;
+            border: 1px solid var(--inactive-border);
+            padding: 18px 10px; /* 사각형을 크게 키움 */
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .active-card {
+            border: 2px solid var(--active-border);
+            background-color: var(--active-bg);
+        }
+
+        .ip-text {
+            /* 등폭 폰트로 IP 숫자 정렬 유지 */
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 1.05rem; 
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* 유니코드 기호를 활용한 상태 표시 */
+        .status-mark {
+            font-size: 1rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div style="display: flex; align-items: baseline; gap: 15px;">
+            <h1 class="main-title">IP 할당 정보</h1>
+            <span style="font-size: 1.1rem; color: #666; font-weight: 600;">
+                Active: 
+                <span style="color: var(--active-border); font-size: 1.3rem;">{{ network.active_count }}</span> 
+                / {{ network.total_count }}
+            </span>
+        </div>
+        <!-- <a href="/ip-scan" class="refresh-btn">
+            <span style="font-size: 1.2rem; margin-right: 8px;">↻</span>
+            지금 스캔하기
+        </a> -->
+    </header>
+
+    <div class="network-grid">
+        {% for item in network.data %}
+        <div class="ip-card {{ 'active-card' if item.is_active else '' }}">
+            <span class="ip-text">{{ item.ip }}</span>
+            <div class="status-mark">
+                {% if item.is_active %}
+                    <span style="color: var(--active-border);">●</span>
+                {% else %}
+                    <span style="color: #ccc;">○</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Web Framework
+Flask==3.0.2
+
+# Network Scanning (Pure Python)
+scapy==2.5.0
+
+# WSGI Server (운영 환경용)
+gunicorn==21.2.0
