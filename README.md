@@ -1,5 +1,6 @@
 # IP-Scanner
-IP-Scanner is a lightweight network scanning tool designed to track IP usage and monitor connected devices in real-time. It combines low-level packet analysis using Scapy with a web interface built on Flask.
+IP-Scanner is a lightweight network scanning tool designed to track IP usage and monitor connected devices in real-time. 
+It combines low-level packet analysis using Scapy with a web interface built on Flask.
 
 ## Key Features
 Real-time Network Scanning: Discovery of active devices using ARP/ICMP protocols.
@@ -7,11 +8,11 @@ Web Dashboard: Intuitive data visualization powered by Flask.
 Container Optimization: Simple deployment using Docker and Docker-compose.
 
 ## Tech Stack
-Language: Python 3.11
-Framework: Flask 3.0.2
-Networking: Scapy 2.5.0 (Pure Python)
-Server: Gunicorn 21.2.0 (WSGI)
-Infrastructure: Docker, Docker-compose
+Language: Python 3.11 
+Framework: Flask 3.0.2 
+Networking: Scapy 2.5.0 (Pure Python) 
+Server: Gunicorn 21.2.0 (WSGI) 
+Infrastructure: Docker, Docker-compose 
 
 ## Prerequisites
 Since this tool directly accesses network interfaces to scan packets, execution in a Linux environment is recommended. Privileged permissions are required when running via Docker.
