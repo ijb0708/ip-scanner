@@ -23,8 +23,8 @@ Clone the repository
 ```Bash
 git clone https://github.com/ijb0708/ip-scanner.git
 cd ip-scanner
-Build and run the container
 
+# Build and run the container
 docker-compose up -d --build
 ```
 
