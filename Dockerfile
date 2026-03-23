@@ -23,4 +23,4 @@ EXPOSE 5000
 
 # 7. Gunicorn을 이용한 실행 (src/app.py 내의 app 객체 호출 기준)
 # --bind 0.0.0.0:5000 설정을 통해 외부 접속 허용
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "src.app:app"]
+CMD ["sh", "-c", "PYTHONPATH=src gunicorn --bind 0.0.0.0:5000 src.app:app"]
