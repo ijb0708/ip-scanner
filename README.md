@@ -31,8 +31,7 @@ docker-compose up -d --build
 Open your browser and navigate to http://localhost:5000 to check the scan results.
 
 ## Project Structure
-```
-Plaintext
+```Plaintext
 .
 ├── src/
 │   ├── app.py          # Flask application entry point
