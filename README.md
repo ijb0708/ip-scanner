@@ -21,7 +21,7 @@ Since this tool directly accesses network interfaces to scan packets, execution 
 Clone the repository
 
 ```Bash
-git clone https://github.com/your-repo/ip-scanner.git
+git clone https://github.com/ijb0708/ip-scanner.git
 cd ip-scanner
 Build and run the container
 
@@ -30,17 +30,6 @@ docker-compose up -d --build
 
 Open your browser and navigate to http://localhost:5000 to check the scan results.
 
-## Project Structure
-```Plaintext
-.
-├── src/
-│   ├── app.py          # Flask application entry point
-│   └── scanner.py      # Scapy-based scanning logic
-├── Dockerfile          # Multi-stage build and environment setup
-├── docker-compose.yml  # Service definition and network configuration
-├── requirements.txt    # Python dependency list
-└── README.md           # Project documentation
-```
 ## Notes
 * Network Mode: Uses network_mode: "host" to directly control the host's network interface.
 * Security: Designed for local network management; use caution when exposing it to public IP environments.
