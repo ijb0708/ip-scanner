@@ -92,6 +92,37 @@
             font-size: 1rem;
             line-height: 1;
         }
+        
+        /* 회전 애니메이션 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        /* 버튼 비활성화 상태 */
+        .refresh-btn.loading {
+            background-color: #6c757d;
+            pointer-events: none; /* 클릭 방지 */
+            cursor: not-allowed;
+        }
+
+        /* 리스트 투명도 조절 (스캔 중임을 시각화) */
+        #ip-list.scanning {
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
     </style>
 </head>
 <body>
@@ -101,37 +132,40 @@
             <h1 class="main-title">IP 할당 정보</h1>
             <span style="font-size: 1.1rem; color: #666; font-weight: 600;">
                 Active: 
-                <span id="active-count" style="color: var(--active-border); font-size: 1.3rem;">0</span> 
-                / <span id="total-count">0</span>
+                <span id="activeCount" style="color: var(--active-border); font-size: 1.3rem;">0</span> 
+                / <span id="totalCount">0</span>
             </span>
         </div>
-        <a href="javascript:refreshNetworkStatus();" class="refresh-btn">
+        <a id="refreshBtn" href="javascript:refreshNetworkStatus();" class="refresh-btn">
             <span style="font-size: 1.2rem; margin-right: 8px;">↻</span>
             지금 스캔하기
         </a>
     </header>
 
-    <div id="ip-list" class="network-grid"></div>
+    <div id="ipList" class="network-grid"></div>
 
 </body>
 <script>
 
     async function refreshNetworkStatus() {
 
-        try {
-            const response = await fetch('/ip-scan'); // JSON을 반환하는 엔드포인트
-            const result = await response.json();
-            
-            // console.log("Received Data:", result);
+        const refreshBtnEl = document.getElementById('refreshBtn');
+        const ipListEL = document.getElementById('ipList');
+        const activeCountEl = document.getElementById('activeCount');
+        const totalCountEl = document.getElementById('totalCount');
 
-            const ipListEL = document.getElementById('ip-list');
-            const activeCountEl = document.getElementById('active-count');
-            const totalCountEl = document.getElementById('total-count');
+        try {
             
+            refreshBtnEl.classList.add('loading');
+            refreshBtnEl.innerHTML = `<span class="spinner"></span> 스캔 중...`;
+            ipListEL.classList.add('scanning');
+
             // init list
             ipListEL.innerHTML = '';
 
-            // // 통계 업데이트
+            const response = await fetch('/ip-scan'); // JSON을 반환하는 엔드포인트
+            const result = await response.json();
+
             activeCountEl.textContent = result.active_count;
             totalCountEl.textContent = result.total_count;
 
@@ -158,6 +192,16 @@
         } catch (error) {
             console.error("스캔 중 에러 발생:", error);
             document.getElementById('ip-list').innerHTML = "<p>데이터를 불러오지 못했습니다.</p>";
+        }finally {
+
+            if (refreshBtnEl) {
+                refreshBtnEl.classList.remove('loading');
+                refreshBtnEl.innerHTML = `<span style="font-size: 1.2rem; margin-right: 8px;">↻</span> 지금 스캔하기`;
+            }
+
+            if (ipListEL) {
+                ipListEL.classList.remove('scanning');
+            }
         }
     }
     
