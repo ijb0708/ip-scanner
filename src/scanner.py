@@ -27,7 +27,7 @@ def ip_scan(network_cidr="10.100.0.0/24"):
         active_hosts = [received.psrc for sent, received in ans]
         
         # 중복 제거 및 정렬
-        return sorted(list(set(active_hosts)))
+        return sorted(active_hosts)
 
     except Exception as e:
         print(f"Scan Error: {e}", flush=True)

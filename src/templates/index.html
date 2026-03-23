@@ -101,30 +101,70 @@
             <h1 class="main-title">IP 할당 정보</h1>
             <span style="font-size: 1.1rem; color: #666; font-weight: 600;">
                 Active: 
-                <span style="color: var(--active-border); font-size: 1.3rem;">{{ network.active_count }}</span> 
-                / {{ network.total_count }}
+                <span id="active-count" style="color: var(--active-border); font-size: 1.3rem;">0</span> 
+                / <span id="total-count">0</span>
             </span>
         </div>
-        <!-- <a href="/ip-scan" class="refresh-btn">
+        <a href="javascript:refreshNetworkStatus();" class="refresh-btn">
             <span style="font-size: 1.2rem; margin-right: 8px;">↻</span>
             지금 스캔하기
-        </a> -->
+        </a>
     </header>
 
-    <div class="network-grid">
-        {% for item in network.data %}
-        <div class="ip-card {{ 'active-card' if item.is_active else '' }}">
-            <span class="ip-text">{{ item.ip }}</span>
-            <div class="status-mark">
-                {% if item.is_active %}
-                    <span style="color: var(--active-border);">●</span>
-                {% else %}
-                    <span style="color: #ccc;">○</span>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+    <div id="ip-list" class="network-grid"></div>
 
 </body>
+<script>
+
+    async function refreshNetworkStatus() {
+
+        try {
+            const response = await fetch('/ip-scan'); // JSON을 반환하는 엔드포인트
+            const result = await response.json();
+            
+            // console.log("Received Data:", result);
+
+            const ipListEL = document.getElementById('ip-list');
+            const activeCountEl = document.getElementById('active-count');
+            const totalCountEl = document.getElementById('total-count');
+            
+            // init list
+            ipListEL.innerHTML = '';
+
+            // // 통계 업데이트
+            activeCountEl.textContent = result.active_count;
+            totalCountEl.textContent = result.total_count;
+
+            let allCardHtml = "";
+            result.data.forEach(item => {
+
+                const isActive = item.is_active;
+                allCardHtml += `
+                    <div class="ip-card ${isActive ? 'active-card' : ''}">
+                        <span class="ip-text">${item.ip}</span>
+                        <div class="status-mark">
+                            <span style="color: ${isActive ? 'var(--active-border)' : '#ccc'};">
+                                ${isActive ? '●' : '○'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+            });
+
+            ipListEL.insertAdjacentHTML('beforeend', allCardHtml);
+            ipListEL.style.opacity = '1';
+
+        } catch (error) {
+            console.error("스캔 중 에러 발생:", error);
+            document.getElementById('ip-list').innerHTML = "<p>데이터를 불러오지 못했습니다.</p>";
+        }
+    }
+    
+
+    window.onload = function(){
+        refreshNetworkStatus();
+    }
+
+</script>
 </html>

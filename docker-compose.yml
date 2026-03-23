@@ -6,4 +6,5 @@ services:
     container_name: ip-scanner
     network_mode: "host"
     privileged: true
+    
     restart: always

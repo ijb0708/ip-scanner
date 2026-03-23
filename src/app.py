@@ -10,9 +10,11 @@ app.logger.setLevel(logging.INFO)
 @app.route('/')
 def index():
 
-    network_data = get_network_status("10.1.1.0/24")
+    return render_template('index.html')
 
-    return render_template('index.html', network=network_data)
+@app.route('/ip-scan')
+def ip_scan():
+    return get_network_status()
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
